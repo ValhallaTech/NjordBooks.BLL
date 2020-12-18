@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using NjordBooks.BLL.Models
+@inject UserManager<NjordBooksUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+<div class="modal fade" id="invitationCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel">Accept invitation</h3>
+            </div>
+            <div class="modal-body">
+                <form asp-controller="Invitations" asp-action="Accept" enctype="multipart/form-data" method="get">
+                    <div class="form-group">
+                        <input type="hidden" name="email" class="form-control" value="@user.Email" />
+                    </div>
+                    <div class="form-group">
+                        <label for="code" style="color:#3b3f5c;">Code</label>
+                        <input name="code" class="form-control" />
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="col-md">
+                            <button type="submit" class="btn btn-primary">Join</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

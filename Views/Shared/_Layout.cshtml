@@ -1,0 +1,332 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using NjordBooks.BLL.Data.Enums
+@using NjordBooks.BLL.Models
+@inject UserManager<NjordBooksUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"] - RockTransactions</title>
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+
+    <link href="~/css/loader.css" rel="stylesheet" />
+    <script src="~/js/loader.js"></script>
+
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/plugins.css" rel="stylesheet" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    <link href="~/css/apexcharts.css" rel="stylesheet" />
+    <link href="~/css/dash_2.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/b-flash-1.6.5/b-html5-1.6.5/b-print-1.6.5/datatables.min.css" />
+
+    <!-- Wizardry -->
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery/dist/jquery.steps.js"></script>
+    <link href="~/css/jquery.steps.css" rel="stylesheet" />
+
+    <!-- font awesome -->
+    <script src="https://kit.fontawesome.com/8b5ae67e5c.js" crossorigin="anonymous"></script>
+</head>
+<body class="alt-menu sidebar-noneoverflow">
+    <!-- BEGIN LOADER -->
+    <div id="load_screen">
+        <div class="loader">
+            <div class="loader-content">
+                <div class="spinner-grow align-self-center"></div>
+            </div>
+        </div>
+    </div>
+    <!--  END LOADER -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        <!--  BEGIN NAVBAR  -->
+        <div class="header-container">
+            <header class="header navbar navbar-expand-sm">
+
+                <a href="javascript:void(0);" class="sidebarCollapse" data-placement="bottom"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></a>
+
+                <div class="nav-logo align-self-center">
+                    <a class="navbar-brand" asp-controller="Home" asp-action="Index"><img alt="logo" src="~/assets/img/rock.png"> <span class="navbar-brand-name">Rock Transactions</span></a>
+                </div>
+
+                <ul class="navbar-item flex-row mr-md-auto">
+                    <li class="nav-item align-self-center search-animated">
+                    </li>
+                </ul>
+
+                <ul class="navbar-item flex-row nav-dropdowns mr-3">
+                    <partial name="_LoginPartial" />
+                </ul>
+            </header>
+        </div>
+        <!--  END NAVBAR  -->
+    }
+    <!--  BEGIN MAIN CONTAINER  -->
+    <div class="main-container" id="container">
+
+        <div class="overlay"></div>
+        <div class="search-overlay"></div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <!--  BEGIN TOPBAR  -->
+            <div class="topbar-nav header navbar" role="banner">
+                <nav id="topbar">
+                    <ul class="navbar-nav theme-brand flex-row  text-center">
+                        <li class="nav-item theme-logo">
+                            <a href="index.html">
+                                <img src="~/assets/img/90x90.jpg" class="navbar-logo" alt="logo">
+                            </a>
+                        </li>
+                        <li class="nav-item theme-text">
+                            <a href="index.html" class="nav-link"> CORK </a>
+                        </li>
+                    </ul>
+
+                    <ul class="list-unstyled menu-categories justify-content-between" id="topAccordion">
+                        @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.New)))
+                        {
+                            @* Lobby *@
+                            <li class="menu single-menu">
+                                <a href="#dashboard" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle autodroprown" style="border:none !important;">
+                                    <div class="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-coffee"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                                        <span>Lobby</span>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </a>
+                                <ul class="collapse submenu list-unstyled" id="dashboard" data-parent="#topAccordion">
+                                    <li>
+                                        <a asp-controller="Home" asp-action="Index"> Home </a>
+                                    </li>
+                                    <li>
+                                        <a class="newhouseholdlink" data-toggle="modal" data-target="#householdModal">
+                                            New Household
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.Head)) || User.IsInRole(nameof(Roles.Member)))
+                        {
+                            @* Households *@
+                            <li class="menu single-menu">
+                                <a href="#dashboard" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle autodroprown" style="border:none !important;">
+                                    <div class="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                        <span>Household</span>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </a>
+                                <ul class="collapse submenu list-unstyled" id="dashboard" data-parent="#topAccordion">
+                                    @if (User.IsInRole(nameof(Roles.Admin)))
+                                    {
+                                        <li class="active">
+                                            <a asp-controller="HouseHolds" asp-action="Index"> All </a>
+                                        </li>
+                                    }
+                                    <li>
+                                        <a asp-controller="HouseHolds" asp-action="Dashboard"> Dashboard</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="BankAccounts" asp-action="Index">Manage Accounts</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="Categories" asp-action="Index">Manage Categories</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="CategoryItems" asp-action="Index">Manage Items</a>
+                                    </li>
+                                    @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.New)))
+                                    {
+                                        <li>
+                                            <a asp-controller="HouseHolds" asp-action="Create"> Create</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+
+                        @if (User.IsInRole(nameof(Roles.Admin)))
+                        {
+                            @* BankAccounts *@
+                            <li class="menu single-menu">
+                                <a href="#dashboard" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle autodroprown">
+                                    <div class="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-credit-card"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                                        <span>BankAccounts</span>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </a>
+                                <ul class="collapse submenu list-unstyled" id="dashboard" data-parent="#topAccordion">
+                                    <li class="active">
+                                        <a asp-controller="BankAccounts" asp-action="Index"> All </a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="BankAccounts" asp-action="Create"> Create</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @* Categories *@
+                            <li class="menu single-menu">
+                                <a href="#dashboard" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle autodroprown">
+                                    <div class="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-umbrella"><path d="M23 12a11.05 11.05 0 0 0-22 0zm-5 7a3 3 0 0 1-6 0v-7"></path></svg>
+                                        <span>Categories</span>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </a>
+                                <ul class="collapse submenu list-unstyled" id="dashboard" data-parent="#topAccordion">
+                                    <li class="active">
+                                        <a asp-controller="Categories" asp-action="Index"> All </a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="Categories" asp-action="Create"> Create</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @* CategoryItems *@
+                            <li class="menu single-menu">
+                                <a href="#dashboard" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle autodroprown">
+                                    <div class="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                                        <span>CategoryItems</span>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </a>
+                                <ul class="collapse submenu list-unstyled" id="dashboard" data-parent="#topAccordion">
+                                    <li class="active">
+                                        <a asp-controller="CategoryItems" asp-action="Index"> All </a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="CategoryItems" asp-action="Create"> Create</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @* Transactions *@
+                            <li class="menu single-menu">
+                                <a href="#dashboard" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle autodroprown">
+                                    <div class="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                                        <span>Transactions</span>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </a>
+                                <ul class="collapse submenu list-unstyled" id="dashboard" data-parent="#topAccordion">
+                                    <li class="active">
+                                        <a asp-controller="Transactions" asp-action="Index"> All </a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="Transactions" asp-action="Create"> Create</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @* Invitations *@
+                            <li class="menu single-menu">
+                                <a href="#dashboard" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle autodroprown">
+                                    <div class="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                                        <span>Invitations</span>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                </a>
+                                <ul class="collapse submenu list-unstyled" id="dashboard" data-parent="#topAccordion">
+                                    <li class="active">
+                                        <a asp-controller="Invitations" asp-action="Index"> All </a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="Invitations" asp-action="Create"> Create</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+
+                        @* Notifications *@
+                        <partial name="_NotificationPartial" />
+                    </ul>
+                </nav>
+            </div>
+            <!--  END TOPBAR  -->
+        }
+
+        <!--  BEGIN CONTENT PART  -->
+        <div id="content" class="main-content">
+            <div class="layout-px-spacing">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="page-header" hidden>
+                        <div class="page-title">
+                            <h3>Role ---> @User.Claims</h3>
+                        </div>
+                        <div class="dropdown filter custom-dropdown-icon">
+                            <a class="dropdown-toggle btn" href="#" role="button" id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="text"><span>Show</span> : Daily Analytics</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="filterDropdown">
+                                <a class="dropdown-item" data-value="<span>Show</span> : Daily Analytics" href="javascript:void(0);">Daily Analytics</a>
+                                <a class="dropdown-item" data-value="<span>Show</span> : Weekly Analytics" href="javascript:void(0);">Weekly Analytics</a>
+                                <a class="dropdown-item" data-value="<span>Show</span> : Monthly Analytics" href="javascript:void(0);">Monthly Analytics</a>
+                                <a class="dropdown-item" data-value="Download All" href="javascript:void(0);">Download All</a>
+                                <a class="dropdown-item" data-value="Share Statistics" href="javascript:void(0);">Share Statistics</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <main role="main">
+                    @RenderBody()
+                </main>
+
+            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="footer-wrapper">
+                    <div class="footer-section f-section-1">
+                        <p class="">Copyright © 2020 <a target="_blank" href="https://designreset.com">DesignReset</a>, All rights reserved.</p>
+                    </div>
+                    <div class="footer-section f-section-2">
+                        <p class="">Coded with <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    @await Html.PartialAsync("_HouseholdModalPartial")
+    <!--  END CONTENT PART  -->
+    @*</div>*@
+    <!-- END MAIN CONTAINER -->
+    <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+    @*<script src="~/lib/jquery/dist/jquery-3.1.1.min.js"></script>*@
+    <script src="~/lib/bootstrap/dist/js/popper.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/perfect-scrollbar.min.js"></script>
+    <script src="~/js/app.js"></script>
+    <script>
+        $(document).ready(function () {
+            App.init();
+        });
+    </script>
+    <script src="~/js/custom.js"></script>
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    <script src="~/js/dash_2.js"></script>
+    @*sweet alerts*@
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/b-flash-1.6.5/b-html5-1.6.5/b-print-1.6.5/datatables.min.js"></script>
+
+    <script src="~/js/site.js"></script>
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

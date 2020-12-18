@@ -1,0 +1,58 @@
+﻿@using NjordBooks.BLL.Models
+@model IEnumerable<Household>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+    <div class="col-md mt-3">
+        <h1>Households</h1>
+        <p>
+            <a asp-action="Create" class="btn btn-outline-primary">New Household</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Greeting)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Established)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Greeting)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Established)
+                        </td>
+                        <td>
+                            <form asp-action="Join" asp-route-id="@item.Id" style="display:inline">
+                                <button class="btn btn-outline-secondary" type="submit">Join</button>
+                            </form>
+                            <form asp-action="Leave" style="display:inline">
+                                <button class="btn btn-outline-secondary" type="submit">Leave</button>
+                            </form>
+                            <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            <a class="btn btn-outline-secondary" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

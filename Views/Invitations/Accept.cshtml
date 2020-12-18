@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Accept";
+    string email = TempData["Email"].ToString();
+    string code = TempData["code"].ToString();
+}
+
+<div class="row align-items-md-center justify-content-center pt-0 mt-0" style="height: 100vh;">
+    <div class="col-md-4">
+        <h1>@ViewData["Title"] your invitation</h1>
+        <form asp-controller="Invitations" asp-action="Accept" enctype="multipart/form-data">
+            <h4>By creating an account</h4>
+            <hr />
+            <div class="form-group">
+                <label for="email" style="color:#3b3f5c;">Email: <b>@email</b></label>
+                <input type="hidden" name="email" class="form-control" value="@email" />
+            </div>
+            <div class="form-group">
+                <label for="code" style="color:#3b3f5c;">Code: <b>@code</b></label>
+                <input type="hidden" name="code" class="form-control" value="@code" />
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input name="firstName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input name="lastName" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="avatar">Avatar</label>
+                <input type="file" name="avatar" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" class="form-control" />
+            </div>
+            <div class="row justify-content-between">
+                <div class="col-md">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

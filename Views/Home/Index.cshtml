@@ -1,0 +1,66 @@
+﻿@using NjordBooks.BLL.Models.ViewModels
+@using NjordBooks.BLL.Data.Enums
+@model LobbyVM
+@{
+    ViewData["Title"] = "Lobby";
+}
+
+<div class="row">
+    <div class="col-md mt-3">
+        <div class="text-center">
+            <h1 class="display-4">Welcome to the lobby</h1>
+            @if (Model.Role == Roles.Admin.ToString())
+            {
+                <span class="h3">You are an <b>@Model.Role</b></span>
+            }
+            else if (Model.Role == Roles.Head.ToString())
+            {
+                <span class="h3">You are the <b>@Model.Role</b></span>
+            }
+            else if (Model.Role == Roles.Member.ToString())
+            {
+                <span class="h3">You are a <b>@Model.Role</b></span>
+            }
+            else if (Model.Role == Roles.New.ToString())
+            {
+                <span class="h3">You are a <b>@Model.Role</b> user</span>
+            }
+            @if (Model.Household != null)
+            {
+                <span class="h3">of the <b>@Model.Household</b> household</span>
+            }
+
+            <div class="justify-content-around card-deck mt-5 h-100">
+                <div href="#" class="card col-md-5 ml-5 newhouseholdlink" data-toggle="modal" data-target="#householdModal">
+                    <img class="card-img-top" src="/assets/img/create-household.png" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Create</h5>
+                        <p class="card-text">
+                            By creating a household you will automatically become the head of household where you will have the ability to
+                            invite others to be members of your household. You will also be prompted to add a bank account, category, and an item.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-1 align-self-center">
+                    <i class="fas fa-chevron-left fa-2x"></i>
+                    <span class="h3 m-2">or</span>
+                    <i class="fas fa-chevron-right fa-2x"></i>
+                </div>
+                <div href="#" class="card col-md-5 mr-5 newhouseholdlink" data-toggle="modal" data-target="#invitationCodeModal">
+                    <img class="card-img-top" src="/assets/img/join-household.png" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Join</h5>
+                        <p class="card-text">
+                            To join a household you will need the code that was sent to you through email. You will then be brought into the
+                            household where you will be able to see the accounts, categories, items and transactions of others in the household.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@await Html.PartialAsync("_HouseholdModalPartial").ConfigureAwait(false)
+@await Html.PartialAsync("_InvitationCodePartial").ConfigureAwait(false)

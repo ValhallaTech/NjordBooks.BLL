@@ -1,0 +1,11 @@
+﻿@{
+    string houseHoldName = TempData["HouseHoldName"].ToString();
+}
+
+<div class="row text-center align-items-center" style="height: 90vh;">
+    <div class="col-md">
+        <h1 class="text-danger">Invitation Declined</h1>
+        <h3 style="color:#3b3f5c;">You have declined to join the <em>@houseHoldName</em> household.</h3>
+        <a class="btn btn-outline-secondary" onclick="window.close()">Ok</a>
+    </div>
+</div>

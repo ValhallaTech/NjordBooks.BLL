@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30803.129
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NjordBooks.BLL", "NjordBooks.BLL.csproj", "{EC980B72-B252-401A-91B5-227C95BC735D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC980B72-B252-401A-91B5-227C95BC735D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC980B72-B252-401A-91B5-227C95BC735D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC980B72-B252-401A-91B5-227C95BC735D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC980B72-B252-401A-91B5-227C95BC735D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8833675C-2067-486B-AA36-FCB873BA206C}
+	EndGlobalSection
+EndGlobal
